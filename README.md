@@ -4,7 +4,9 @@ CoffeeSpritz is a bookmarklet written in CoffeeScript that will let you read a s
 
 ## Installation
 
-To install CoffeeSpritz drag the following to your bookmarks bar: <a href="javascript:(var script=document.createElement('SCRIPT');script.src='https://raw.github.com/CarloBarraco/CoffeeSpritz/master/CoffeeSpritz.js';document.body.appendChild(script);">Spritz it</a>
+To install CoffeeSpritz, create a bookmark entry with the location set to:
+
+`javascript:(var script=document.createElement('SCRIPT');script.src='https://raw.github.com/CarloBarraco/CoffeeSpritz/master/CoffeeSpritz.js';document.body.appendChild(script);`
 
 ## Acknowledgements
 
