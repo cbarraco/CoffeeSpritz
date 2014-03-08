@@ -32,6 +32,14 @@
       this.rootDiv = document.createElement("div");
       this.rootDiv.id = "spritz_root";
       this.rootDiv.align = "center";
+      this.rootDiv.style.position = "fixed";
+      this.rootDiv.style.zIndex = "999";
+      this.rootDiv.style.width = "400px";
+      this.rootDiv.style.left = "50%";
+      this.rootDiv.style.marginLeft = "-200px";
+      this.rootDiv.style.backgroundColor = "white";
+      this.rootDiv.style.borderColor = "black";
+      this.rootDiv.style.borderStyle = "solid";
       this.resultDiv = document.createElement("div");
       this.resultDiv.id = "spritz_result";
       this.rootDiv.appendChild(this.resultDiv);
@@ -51,6 +59,10 @@
       this.latterSpan.style.fontSize = "32px";
       this.latterSpan.style.fontFamily = "Droid Sans Mono";
       this.resultDiv.appendChild(this.latterSpan);
+      this.wpmSelectLabel = document.createElement("label");
+      this.wpmSelectLabel.id = "spritz_wpmlabel";
+      this.wpmSelectLabel.innerHTML = "WPM:";
+      this.rootDiv.appendChild(this.wpmSelectLabel);
       this.wpmSelect = document.createElement("select");
       this.wpmSelect.id = "spritz_wpm";
       for (wpm = _i = 200; _i <= 1000; wpm = _i += 50) {
@@ -66,6 +78,13 @@
       };
       this.startButton.innerHTML = "Start";
       this.rootDiv.appendChild(this.startButton);
+      this.closeButton = document.createElement("button");
+      this.closeButton.id = "spritz_close";
+      this.closeButton.onclick = function() {
+        return spritz.hide();
+      };
+      this.closeButton.innerHTML = "Close";
+      this.rootDiv.appendChild(this.closeButton);
       this.running = false;
     }
 
@@ -120,7 +139,7 @@
     Spritz.prototype.go = function() {
       var callback, currentWordIndex, intervalId, selection, words, wpm;
       selection = this.getSelectionText();
-      if (selection.length === 0) {
+      if (!selection || selection.length === 0) {
         alert("Please select text to Spritz");
         return;
       }

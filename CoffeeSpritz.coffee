@@ -19,6 +19,14 @@ class @Spritz
     @rootDiv = document.createElement("div")
     @rootDiv.id = "spritz_root"
     @rootDiv.align = "center"
+    @rootDiv.style.position = "fixed"
+    @rootDiv.style.zIndex = "999"
+    @rootDiv.style.width = "400px"
+    @rootDiv.style.left = "50%"
+    @rootDiv.style.marginLeft = "-200px"
+    @rootDiv.style.backgroundColor = "white"
+    @rootDiv.style.borderColor = "black"
+    @rootDiv.style.borderStyle = "solid"
     @resultDiv = document.createElement("div")
     @resultDiv.id = "spritz_result"
     @rootDiv.appendChild(@resultDiv)
@@ -38,6 +46,10 @@ class @Spritz
     @latterSpan.style.fontSize = "32px"
     @latterSpan.style.fontFamily = "Droid Sans Mono"
     @resultDiv.appendChild(@latterSpan)
+    @wpmSelectLabel = document.createElement("label")
+    @wpmSelectLabel.id = "spritz_wpmlabel"
+    @wpmSelectLabel.innerHTML = "WPM:"
+    @rootDiv.appendChild(@wpmSelectLabel)
     @wpmSelect = document.createElement("select")
     @wpmSelect.id = "spritz_wpm"
     for wpm in [200..1000] by 50
@@ -51,6 +63,12 @@ class @Spritz
       spritz.go()
     @startButton.innerHTML = "Start"
     @rootDiv.appendChild(@startButton)
+    @closeButton = document.createElement("button")
+    @closeButton.id = "spritz_close"
+    @closeButton.onclick = () ->
+      spritz.hide()
+    @closeButton.innerHTML = "Close"
+    @rootDiv.appendChild(@closeButton)
     @running = false
   show: () ->
     if document.body.firstChild
@@ -85,7 +103,7 @@ class @Spritz
     @latterSpan.innerHTML = latter
   go: () ->
     selection = @getSelectionText()
-    if selection.length is 0
+    if not selection or selection.length is 0
       alert("Please select text to Spritz")
       return
     @running = true
