@@ -123,14 +123,11 @@
       if (word.length > 2) {
         former = word.slice(0, pivotIndex);
       }
-      if (former.length > latter.length) {
-        while (former.length > latter.length) {
-          latter += "\u00A0";
-        }
-      } else if (latter.length > former.length) {
-        while (latter.length > former.length) {
-          former = "\u00A0" + former;
-        }
+      while (former.length > latter.length) {
+        latter += "\u00A0";
+      }
+      while (latter.length > former.length) {
+        former = "\u00A0" + former;
       }
       this.formerSpan.innerHTML = former;
       return this.latterSpan.innerHTML = latter;
@@ -144,6 +141,7 @@
         return;
       }
       this.running = true;
+      selection.replace(/\./, ".\u00A0");
       words = selection.split(/\s+/);
       currentWordIndex = 0;
       callback = (function(_this) {

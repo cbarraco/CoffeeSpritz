@@ -93,12 +93,10 @@ class @Spritz
     former = ""
     if word.length > 2
       former = word.slice(0, pivotIndex)
-    if former.length > latter.length
-      while former.length > latter.length
-        latter += "\u00A0"
-    else if latter.length > former.length
-      while latter.length > former.length
-        former = "\u00A0" + former
+    while former.length > latter.length
+      latter += "\u00A0"
+    while latter.length > former.length
+      former = "\u00A0" + former
     @formerSpan.innerHTML = former
     @latterSpan.innerHTML = latter
   go: () ->
@@ -107,6 +105,7 @@ class @Spritz
       alert("Please select text to Spritz")
       return
     @running = true
+    selection.replace(/\./, ".\u00A0") # If paragraph ends in a period it joins with the first word of the next paragraph
     words = selection.split(/\s+/)
     currentWordIndex = 0
     callback = () =>
