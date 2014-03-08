@@ -108,9 +108,19 @@ class @Spritz
     selection.replace(/\./, ".\u00A0") # If paragraph ends in a period it joins with the first word of the next paragraph
     words = selection.split(/\s+/)
     currentWordIndex = 0
+    waiting = false
     callback = () =>
       if currentWordIndex < words.length
-        @setWord(words[currentWordIndex++])
+        currentWord = words[currentWordIndex]
+        if currentWord.length > 10
+          if not waiting
+            @setWord(words[currentWordIndex])
+            waiting = true
+          else
+            @setWord(words[currentWordIndex++])
+            waiting = false
+        else
+          @setWord(words[currentWordIndex++])
       else
         clearInterval(intervalId)
         @running = false

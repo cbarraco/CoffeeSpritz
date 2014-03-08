@@ -134,7 +134,7 @@
     };
 
     Spritz.prototype.go = function() {
-      var callback, currentWordIndex, intervalId, selection, words, wpm;
+      var callback, currentWordIndex, intervalId, selection, waiting, words, wpm;
       selection = this.getSelectionText();
       if (!selection || selection.length === 0) {
         alert("Please select text to Spritz");
@@ -144,10 +144,23 @@
       selection.replace(/\./, ".\u00A0");
       words = selection.split(/\s+/);
       currentWordIndex = 0;
+      waiting = false;
       callback = (function(_this) {
         return function() {
+          var currentWord;
           if (currentWordIndex < words.length) {
-            return _this.setWord(words[currentWordIndex++]);
+            currentWord = words[currentWordIndex];
+            if (currentWord.length > 10) {
+              if (!waiting) {
+                _this.setWord(words[currentWordIndex]);
+                return waiting = true;
+              } else {
+                _this.setWord(words[currentWordIndex++]);
+                return waiting = false;
+              }
+            } else {
+              return _this.setWord(words[currentWordIndex++]);
+            }
           } else {
             clearInterval(intervalId);
             return _this.running = false;
