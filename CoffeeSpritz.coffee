@@ -27,6 +27,7 @@ class @Spritz
     @rootDiv.style.backgroundColor = "white"
     @rootDiv.style.borderColor = "black"
     @rootDiv.style.borderStyle = "solid"
+    @rootDiv.style.borderWidth = "3px"
     @wordDiv = @addUiElement("div", "spritz_word", @rootDiv)
     @formerSpan = @addUiElement("span", "spritz_former", @wordDiv)
     @formerSpan.style.fontSize = "32px"
@@ -105,7 +106,9 @@ class @Spritz
     callback = () =>
       if currentWordIndex < words.length
         currentWord = words[currentWordIndex]
-        if currentWord.length > 10
+        endsWith = (str, suffix) ->
+          return str.indexOf(suffix, str.length - suffix.length) > -1
+        if endsWith(currentWord, ".")
           if not waiting
             @setWord(words[currentWordIndex])
             waiting = true

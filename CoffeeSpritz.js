@@ -40,6 +40,7 @@
       this.rootDiv.style.backgroundColor = "white";
       this.rootDiv.style.borderColor = "black";
       this.rootDiv.style.borderStyle = "solid";
+      this.rootDiv.style.borderWidth = "3px";
       this.wordDiv = this.addUiElement("div", "spritz_word", this.rootDiv);
       this.formerSpan = this.addUiElement("span", "spritz_former", this.wordDiv);
       this.formerSpan.style.fontSize = "32px";
@@ -143,10 +144,13 @@
       waiting = false;
       callback = (function(_this) {
         return function() {
-          var currentWord;
+          var currentWord, endsWith;
           if (currentWordIndex < words.length) {
             currentWord = words[currentWordIndex];
-            if (currentWord.length > 10) {
+            endsWith = function(str, suffix) {
+              return str.indexOf(suffix, str.length - suffix.length) > -1;
+            };
+            if (endsWith(currentWord, ".")) {
               if (!waiting) {
                 _this.setWord(words[currentWordIndex]);
                 return waiting = true;
