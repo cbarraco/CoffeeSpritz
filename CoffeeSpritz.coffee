@@ -1,5 +1,5 @@
 class @Spritz
-  getSelectionText: () ->
+  getSelectedText: () ->
     text = ""
     if window.getSelection
       selection = window.getSelection()
@@ -50,7 +50,7 @@ class @Spritz
     @wpmSelect.removeAttribute("style")
     @startButton = @addUiElement("button", "spritz_start", @controlsDiv)
     @startButton.onclick = () ->
-      spritz.go()
+      spritz.start()
     @startButton.innerHTML = "Start"
     @startButton.removeAttribute("style")
     @closeButton = @addUiElement("button", "spritz_close", @controlsDiv)
@@ -58,7 +58,6 @@ class @Spritz
       spritz.hide()
     @closeButton.innerHTML = "Close"
     @closeButton.removeAttribute("style")
-    @running = false
   addUiElement: (type, id, parent) ->
     element = document.createElement(type)
     element.id = id
@@ -93,33 +92,19 @@ class @Spritz
       former = "\u00A0" + former
     @formerSpan.innerHTML = former
     @latterSpan.innerHTML = latter
-  go: () ->
-    selection = @getSelectionText()
+  start: () ->
+    selection = @getSelectedText()
     if not selection or selection.length is 0
       alert("Please select text to Spritz")
       return
-    @running = true
     selection.replace(/\./, ".\u00A0") # If paragraph ends in a period it joins with the first word of the next paragraph
     words = selection.split(/\s+/)
     currentWordIndex = 0
-    waiting = false
     callback = () =>
       if currentWordIndex < words.length
-        currentWord = words[currentWordIndex]
-        endsWith = (str, suffix) ->
-          return str.indexOf(suffix, str.length - suffix.length) > -1
-        if endsWith(currentWord, ".")
-          if not waiting
-            @setWord(words[currentWordIndex])
-            waiting = true
-          else
-            @setWord(words[currentWordIndex++])
-            waiting = false
-        else
-          @setWord(words[currentWordIndex++])
+        @setWord(words[currentWordIndex++])
       else
         clearInterval(intervalId)
-        @running = false
     wpm = @getWPM()
     intervalId = setInterval(callback, 60000 / wpm)
 spritz = new Spritz()

@@ -3,7 +3,7 @@
   var spritz;
 
   this.Spritz = (function() {
-    Spritz.prototype.getSelectionText = function() {
+    Spritz.prototype.getSelectedText = function() {
       var container, i, selection, text, _i, _ref;
       text = "";
       if (window.getSelection) {
@@ -64,7 +64,7 @@
       this.wpmSelect.removeAttribute("style");
       this.startButton = this.addUiElement("button", "spritz_start", this.controlsDiv);
       this.startButton.onclick = function() {
-        return spritz.go();
+        return spritz.start();
       };
       this.startButton.innerHTML = "Start";
       this.startButton.removeAttribute("style");
@@ -74,7 +74,6 @@
       };
       this.closeButton.innerHTML = "Close";
       this.closeButton.removeAttribute("style");
-      this.running = false;
     }
 
     Spritz.prototype.addUiElement = function(type, id, parent) {
@@ -130,40 +129,22 @@
       return this.latterSpan.innerHTML = latter;
     };
 
-    Spritz.prototype.go = function() {
-      var callback, currentWordIndex, intervalId, selection, waiting, words, wpm;
-      selection = this.getSelectionText();
+    Spritz.prototype.start = function() {
+      var callback, currentWordIndex, intervalId, selection, words, wpm;
+      selection = this.getSelectedText();
       if (!selection || selection.length === 0) {
         alert("Please select text to Spritz");
         return;
       }
-      this.running = true;
       selection.replace(/\./, ".\u00A0");
       words = selection.split(/\s+/);
       currentWordIndex = 0;
-      waiting = false;
       callback = (function(_this) {
         return function() {
-          var currentWord, endsWith;
           if (currentWordIndex < words.length) {
-            currentWord = words[currentWordIndex];
-            endsWith = function(str, suffix) {
-              return str.indexOf(suffix, str.length - suffix.length) > -1;
-            };
-            if (endsWith(currentWord, ".")) {
-              if (!waiting) {
-                _this.setWord(words[currentWordIndex]);
-                return waiting = true;
-              } else {
-                _this.setWord(words[currentWordIndex++]);
-                return waiting = false;
-              }
-            } else {
-              return _this.setWord(words[currentWordIndex++]);
-            }
+            return _this.setWord(words[currentWordIndex++]);
           } else {
-            clearInterval(intervalId);
-            return _this.running = false;
+            return clearInterval(intervalId);
           }
         };
       })(this);
