@@ -27,49 +27,42 @@ class @Spritz
     @rootDiv.style.backgroundColor = "white"
     @rootDiv.style.borderColor = "black"
     @rootDiv.style.borderStyle = "solid"
-    @resultDiv = document.createElement("div")
-    @resultDiv.id = "spritz_result"
-    @rootDiv.appendChild(@resultDiv)
-    @formerSpan = document.createElement("span")
-    @formerSpan.id = "spritz_former"
+    @wordDiv = @addUiElement("div", "spritz_word", @rootDiv)
+    @formerSpan = @addUiElement("span", "spritz_former", @wordDiv)
     @formerSpan.style.fontSize = "32px"
     @formerSpan.style.fontFamily = "Droid Sans Mono"
-    @resultDiv.appendChild(@formerSpan)
-    @pivotSpan = document.createElement("span")
-    @pivotSpan.id = "spritz_pivot"
+    @pivotSpan = @addUiElement("span", "spritz_pivot", @wordDiv)
     @pivotSpan.style.fontSize = "32px"
     @pivotSpan.style.fontFamily = "Droid Sans Mono"
     @pivotSpan.style.color = "red"
-    @resultDiv.appendChild(@pivotSpan)
-    @latterSpan = document.createElement("span")
-    @latterSpan.id = "spritz_latter"
+    @latterSpan = @addUiElement("span", "spritz_latter", @wordDiv)
     @latterSpan.style.fontSize = "32px"
     @latterSpan.style.fontFamily = "Droid Sans Mono"
-    @resultDiv.appendChild(@latterSpan)
-    @wpmSelectLabel = document.createElement("label")
-    @wpmSelectLabel.id = "spritz_wpmlabel"
+    @controlsDiv = @addUiElement("div", "spritz_controls", @rootDiv)
+    @wpmSelectLabel = @addUiElement("label", "spritz_wpmlabel", @controlsDiv)
     @wpmSelectLabel.innerHTML = "WPM:"
-    @rootDiv.appendChild(@wpmSelectLabel)
-    @wpmSelect = document.createElement("select")
-    @wpmSelect.id = "spritz_wpm"
+    @wpmSelect = @addUiElement("select", "spritz_wpm", @controlsDiv)
     for wpm in [200..1000] by 50
       wpmOption = document.createElement("option")
       wpmOption.text = wpm
       @wpmSelect.add(wpmOption)
-    @rootDiv.appendChild(@wpmSelect)
-    @startButton = document.createElement("button")
-    @startButton.id = "spritz_start"
+    @wpmSelect.removeAttribute("style")
+    @startButton = @addUiElement("button", "spritz_start", @controlsDiv)
     @startButton.onclick = () ->
       spritz.go()
     @startButton.innerHTML = "Start"
-    @rootDiv.appendChild(@startButton)
-    @closeButton = document.createElement("button")
-    @closeButton.id = "spritz_close"
+    @startButton.removeAttribute("style")
+    @closeButton = @addUiElement("button", "spritz_close", @controlsDiv)
     @closeButton.onclick = () ->
       spritz.hide()
     @closeButton.innerHTML = "Close"
-    @rootDiv.appendChild(@closeButton)
+    @closeButton.removeAttribute("style")
     @running = false
+  addUiElement: (type, id, parent) ->
+    element = document.createElement(type)
+    element.id = id
+    parent.appendChild(element)
+    return element
   show: () ->
     if document.body.firstChild
       document.body.insertBefore(@rootDiv, document.body.firstChild)

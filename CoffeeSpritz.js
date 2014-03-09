@@ -40,53 +40,49 @@
       this.rootDiv.style.backgroundColor = "white";
       this.rootDiv.style.borderColor = "black";
       this.rootDiv.style.borderStyle = "solid";
-      this.resultDiv = document.createElement("div");
-      this.resultDiv.id = "spritz_result";
-      this.rootDiv.appendChild(this.resultDiv);
-      this.formerSpan = document.createElement("span");
-      this.formerSpan.id = "spritz_former";
+      this.wordDiv = this.addUiElement("div", "spritz_word", this.rootDiv);
+      this.formerSpan = this.addUiElement("span", "spritz_former", this.wordDiv);
       this.formerSpan.style.fontSize = "32px";
       this.formerSpan.style.fontFamily = "Droid Sans Mono";
-      this.resultDiv.appendChild(this.formerSpan);
-      this.pivotSpan = document.createElement("span");
-      this.pivotSpan.id = "spritz_pivot";
+      this.pivotSpan = this.addUiElement("span", "spritz_pivot", this.wordDiv);
       this.pivotSpan.style.fontSize = "32px";
       this.pivotSpan.style.fontFamily = "Droid Sans Mono";
       this.pivotSpan.style.color = "red";
-      this.resultDiv.appendChild(this.pivotSpan);
-      this.latterSpan = document.createElement("span");
-      this.latterSpan.id = "spritz_latter";
+      this.latterSpan = this.addUiElement("span", "spritz_latter", this.wordDiv);
       this.latterSpan.style.fontSize = "32px";
       this.latterSpan.style.fontFamily = "Droid Sans Mono";
-      this.resultDiv.appendChild(this.latterSpan);
-      this.wpmSelectLabel = document.createElement("label");
-      this.wpmSelectLabel.id = "spritz_wpmlabel";
+      this.controlsDiv = this.addUiElement("div", "spritz_controls", this.rootDiv);
+      this.wpmSelectLabel = this.addUiElement("label", "spritz_wpmlabel", this.controlsDiv);
       this.wpmSelectLabel.innerHTML = "WPM:";
-      this.rootDiv.appendChild(this.wpmSelectLabel);
-      this.wpmSelect = document.createElement("select");
-      this.wpmSelect.id = "spritz_wpm";
+      this.wpmSelect = this.addUiElement("select", "spritz_wpm", this.controlsDiv);
       for (wpm = _i = 200; _i <= 1000; wpm = _i += 50) {
         wpmOption = document.createElement("option");
         wpmOption.text = wpm;
         this.wpmSelect.add(wpmOption);
       }
-      this.rootDiv.appendChild(this.wpmSelect);
-      this.startButton = document.createElement("button");
-      this.startButton.id = "spritz_start";
+      this.wpmSelect.removeAttribute("style");
+      this.startButton = this.addUiElement("button", "spritz_start", this.controlsDiv);
       this.startButton.onclick = function() {
         return spritz.go();
       };
       this.startButton.innerHTML = "Start";
-      this.rootDiv.appendChild(this.startButton);
-      this.closeButton = document.createElement("button");
-      this.closeButton.id = "spritz_close";
+      this.startButton.removeAttribute("style");
+      this.closeButton = this.addUiElement("button", "spritz_close", this.controlsDiv);
       this.closeButton.onclick = function() {
         return spritz.hide();
       };
       this.closeButton.innerHTML = "Close";
-      this.rootDiv.appendChild(this.closeButton);
+      this.closeButton.removeAttribute("style");
       this.running = false;
     }
+
+    Spritz.prototype.addUiElement = function(type, id, parent) {
+      var element;
+      element = document.createElement(type);
+      element.id = id;
+      parent.appendChild(element);
+      return element;
+    };
 
     Spritz.prototype.show = function() {
       if (document.body.firstChild) {
