@@ -37,12 +37,35 @@
       this.rootDiv.style.width = "400px";
       this.rootDiv.style.height = "80px";
       this.rootDiv.style.left = "50%";
-      this.rootDiv.style.top = "25px";
+      this.rootDiv.style.margin = "0px";
       this.rootDiv.style.marginLeft = "-200px";
+      this.rootDiv.style.padding = "0px";
+      this.rootDiv.style.paddingTop = "10px";
       this.rootDiv.style.backgroundColor = "white";
       this.rootDiv.style.borderColor = "black";
       this.rootDiv.style.borderStyle = "solid";
       this.rootDiv.style.borderWidth = "3px";
+      this.rootDiv.style.cursor = "move";
+      this.mouseDown = false;
+      this.rootDiv.addEventListener("mousedown", (function(_this) {
+        return function() {
+          return _this.mouseDown = true;
+        };
+      })(this));
+      this.rootDiv.addEventListener("mouseup", (function(_this) {
+        return function() {
+          return _this.mouseDown = false;
+        };
+      })(this));
+      this.rootDiv.addEventListener("mousemove", (function(_this) {
+        return function(mouseEvent) {
+          if (_this.mouseDown) {
+            _this.rootDiv.style.left = mouseEvent.pageX + "px";
+            _this.rootDiv.style.top = mouseEvent.pageY - 40 + "px";
+          }
+          return mouseEvent.preventDefault();
+        };
+      })(this));
       fontFamily = "Courier";
       fontSize = "32px";
       this.wordDiv = this.addUiElement("div", "spritz_word", this.rootDiv);
@@ -74,10 +97,11 @@
       this.startButton.removeAttribute("style");
       this.closeButton = this.addUiElement("button", "spritz_close", this.controlsDiv);
       this.closeButton.onclick = function() {
-        return spritz.hide();
+        return spritz.remove();
       };
       this.closeButton.innerHTML = "Close";
       this.closeButton.removeAttribute("style");
+      document.body.appendChild(this.rootDiv);
     }
 
     Spritz.prototype.addUiElement = function(type, id, parent) {
@@ -88,15 +112,7 @@
       return element;
     };
 
-    Spritz.prototype.show = function() {
-      if (document.body.firstChild) {
-        return document.body.insertBefore(this.rootDiv, document.body.firstChild);
-      } else {
-        return document.body.appendChild(this.rootDiv);
-      }
-    };
-
-    Spritz.prototype.hide = function() {
+    Spritz.prototype.remove = function() {
       return document.body.removeChild(this.rootDiv);
     };
 
@@ -161,8 +177,6 @@
   })();
 
   spritz = new Spritz();
-
-  spritz.show();
 
   spritz.setWord("CoffeeSpritz");
 

@@ -24,12 +24,25 @@ class @Spritz
     @rootDiv.style.width = "400px"
     @rootDiv.style.height = "80px"
     @rootDiv.style.left = "50%"
-    @rootDiv.style.top = "25px"
+    @rootDiv.style.margin = "0px"
     @rootDiv.style.marginLeft = "-200px"
+    @rootDiv.style.padding = "0px"
+    @rootDiv.style.paddingTop = "10px"
     @rootDiv.style.backgroundColor = "white"
     @rootDiv.style.borderColor = "black"
     @rootDiv.style.borderStyle = "solid"
     @rootDiv.style.borderWidth = "3px"
+    @rootDiv.style.cursor = "move"
+    @mouseDown = false
+    @rootDiv.addEventListener "mousedown", () =>
+      @mouseDown = true
+    @rootDiv.addEventListener "mouseup", () =>
+      @mouseDown = false
+    @rootDiv.addEventListener "mousemove", (mouseEvent) =>
+      if @mouseDown
+        @rootDiv.style.left = mouseEvent.pageX + "px"
+        @rootDiv.style.top = mouseEvent.pageY - 40 + "px"
+      mouseEvent.preventDefault()
     fontFamily = "Courier"
     fontSize = "32px"
     @wordDiv = @addUiElement("div", "spritz_word", @rootDiv)
@@ -59,20 +72,16 @@ class @Spritz
     @startButton.removeAttribute("style")
     @closeButton = @addUiElement("button", "spritz_close", @controlsDiv)
     @closeButton.onclick = () ->
-      spritz.hide()
+      spritz.remove()
     @closeButton.innerHTML = "Close"
     @closeButton.removeAttribute("style")
+    document.body.appendChild(@rootDiv)
   addUiElement: (type, id, parent) ->
     element = document.createElement(type)
     element.id = id
     parent.appendChild(element)
     return element
-  show: () ->
-    if document.body.firstChild
-      document.body.insertBefore(@rootDiv, document.body.firstChild)
-    else
-      document.body.appendChild(@rootDiv)
-  hide: () ->
+  remove: () ->
     document.body.removeChild(@rootDiv)
   getWPM: () ->
     selectedIndex = @wpmSelect.selectedIndex
@@ -112,5 +121,4 @@ class @Spritz
     wpm = @getWPM()
     intervalId = setInterval(callback, 60000 / wpm)
 spritz = new Spritz()
-spritz.show()
 spritz.setWord("CoffeeSpritz")
