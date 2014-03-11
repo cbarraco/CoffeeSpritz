@@ -66,6 +66,11 @@
           return mouseEvent.preventDefault();
         };
       })(this));
+      this.rootDiv.addEventListener("mouseleave", (function(_this) {
+        return function() {
+          return _this.mouseDown = false;
+        };
+      })(this));
       fontFamily = "Courier";
       fontSize = "32px";
       this.wordDiv = this.addUiElement("div", "spritz_word", this.rootDiv);

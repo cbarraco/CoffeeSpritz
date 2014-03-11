@@ -43,6 +43,8 @@ class @Spritz
         @rootDiv.style.left = mouseEvent.pageX + "px"
         @rootDiv.style.top = mouseEvent.pageY - 40 + "px"
       mouseEvent.preventDefault()
+    @rootDiv.addEventListener "mouseleave", () =>
+      @mouseDown = false
     fontFamily = "Courier"
     fontSize = "32px"
     @wordDiv = @addUiElement("div", "spritz_word", @rootDiv)
