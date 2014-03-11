@@ -101,7 +101,11 @@
       };
       this.closeButton.innerHTML = "Close";
       this.closeButton.removeAttribute("style");
-      document.body.appendChild(this.rootDiv);
+      if (document.body.firstChild) {
+        document.body.insertBefore(this.rootDiv, document.body.firstChild);
+      } else {
+        document.body.appendChild(this.rootDiv);
+      }
     }
 
     Spritz.prototype.addUiElement = function(type, id, parent) {

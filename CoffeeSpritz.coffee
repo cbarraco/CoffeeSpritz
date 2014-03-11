@@ -75,7 +75,10 @@ class @Spritz
       spritz.remove()
     @closeButton.innerHTML = "Close"
     @closeButton.removeAttribute("style")
-    document.body.appendChild(@rootDiv)
+    if document.body.firstChild
+      document.body.insertBefore(@rootDiv, document.body.firstChild)
+    else
+      document.body.appendChild(@rootDiv)
   addUiElement: (type, id, parent) ->
     element = document.createElement(type)
     element.id = id
