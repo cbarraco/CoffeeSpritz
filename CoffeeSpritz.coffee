@@ -40,8 +40,8 @@ class @Spritz
       @mouseDown = false
     @rootDiv.addEventListener "mousemove", (mouseEvent) =>
       if @mouseDown
-        @rootDiv.style.left = mouseEvent.pageX + "px"
-        @rootDiv.style.top = mouseEvent.pageY - 40 + "px"
+        @rootDiv.style.left = mouseEvent.clientX + "px"
+        @rootDiv.style.top = mouseEvent.clientY - 40 + "px"
       mouseEvent.preventDefault()
     @rootDiv.addEventListener "mouseleave", () =>
       @mouseDown = false

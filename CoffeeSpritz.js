@@ -60,8 +60,8 @@
       this.rootDiv.addEventListener("mousemove", (function(_this) {
         return function(mouseEvent) {
           if (_this.mouseDown) {
-            _this.rootDiv.style.left = mouseEvent.pageX + "px";
-            _this.rootDiv.style.top = mouseEvent.pageY - 40 + "px";
+            _this.rootDiv.style.left = mouseEvent.clientX + "px";
+            _this.rootDiv.style.top = mouseEvent.clientY - 40 + "px";
           }
           return mouseEvent.preventDefault();
         };
