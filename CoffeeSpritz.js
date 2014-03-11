@@ -35,12 +35,10 @@
       this.rootDiv.style.position = "fixed";
       this.rootDiv.style.zIndex = "9999";
       this.rootDiv.style.width = "400px";
-      this.rootDiv.style.height = "80px";
       this.rootDiv.style.left = "50%";
       this.rootDiv.style.margin = "0px";
       this.rootDiv.style.marginLeft = "-200px";
-      this.rootDiv.style.padding = "0px";
-      this.rootDiv.style.paddingTop = "10px";
+      this.rootDiv.style.padding = "10px";
       this.rootDiv.style.backgroundColor = "white";
       this.rootDiv.style.borderColor = "black";
       this.rootDiv.style.borderStyle = "solid";
