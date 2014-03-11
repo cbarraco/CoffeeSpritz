@@ -43,19 +43,15 @@ class @Spritz
       mouseEvent.preventDefault()
     @rootDiv.addEventListener "mouseleave", () =>
       @mouseDown = false
-    fontFamily = "Courier"
-    fontSize = "32px"
+    font = "bold 32px Courier"
     @wordDiv = @addUiElement("div", "spritz_word", @rootDiv)
     @formerSpan = @addUiElement("span", "spritz_former", @wordDiv)
-    @formerSpan.style.fontSize = fontSize
-    @formerSpan.style.fontFamily = fontFamily
+    @formerSpan.style.font = font
     @pivotSpan = @addUiElement("span", "spritz_pivot", @wordDiv)
-    @pivotSpan.style.fontSize = fontSize
-    @pivotSpan.style.fontFamily = fontFamily
+    @pivotSpan.style.font = font
     @pivotSpan.style.color = "red"
     @latterSpan = @addUiElement("span", "spritz_latter", @wordDiv)
-    @latterSpan.style.fontSize = fontSize
-    @latterSpan.style.fontFamily = fontFamily
+    @latterSpan.style.font = font
     @controlsDiv = @addUiElement("div", "spritz_controls", @rootDiv)
     @wpmSelectLabel = @addUiElement("label", "spritz_wpmlabel", @controlsDiv)
     @wpmSelectLabel.innerHTML = "WPM:"
