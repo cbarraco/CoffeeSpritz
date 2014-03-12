@@ -28,7 +28,7 @@
     };
 
     function Spritz() {
-      var fontFamily, fontSize, wpm, wpmOption, _i;
+      var font, wpm, wpmOption, _i;
       this.rootDiv = document.createElement("div");
       this.rootDiv.id = "spritz_root";
       this.rootDiv.align = "center";
@@ -45,47 +45,54 @@
       this.rootDiv.style.borderWidth = "3px";
       this.rootDiv.style.cursor = "move";
       this.mouseDown = false;
-      this.rootDiv.addEventListener("mousedown", (function(_this) {
+      this.rootDiv.onmousedown = (function(_this) {
         return function() {
           return _this.mouseDown = true;
         };
-      })(this));
-      this.rootDiv.addEventListener("mouseup", (function(_this) {
+      })(this);
+      this.rootDiv.onmouseup = (function(_this) {
         return function() {
           return _this.mouseDown = false;
         };
-      })(this));
-      this.rootDiv.addEventListener("mousemove", (function(_this) {
-        return function(mouseEvent) {
+      })(this);
+      this.rootDiv.onmousemove = (function(_this) {
+        return function(event) {
           if (_this.mouseDown) {
-            _this.rootDiv.style.left = mouseEvent.clientX + "px";
-            _this.rootDiv.style.top = mouseEvent.clientY - 40 + "px";
+            _this.rootDiv.style.left = event.clientX + "px";
+            _this.rootDiv.style.top = event.clientY - 40 + "px";
           }
-          return mouseEvent.preventDefault();
+          return event.preventDefault();
         };
-      })(this));
+      })(this);
       this.rootDiv.addEventListener("mouseleave", (function(_this) {
         return function() {
           return _this.mouseDown = false;
         };
       })(this));
-      fontFamily = "Courier";
-      fontSize = "32px";
+      font = "bold 32px Courier";
       this.wordDiv = this.addUiElement("div", "spritz_word", this.rootDiv);
       this.formerSpan = this.addUiElement("span", "spritz_former", this.wordDiv);
-      this.formerSpan.style.fontSize = fontSize;
-      this.formerSpan.style.fontFamily = fontFamily;
+      this.formerSpan.style.font = font;
       this.pivotSpan = this.addUiElement("span", "spritz_pivot", this.wordDiv);
-      this.pivotSpan.style.fontSize = fontSize;
-      this.pivotSpan.style.fontFamily = fontFamily;
+      this.pivotSpan.style.font = font;
       this.pivotSpan.style.color = "red";
       this.latterSpan = this.addUiElement("span", "spritz_latter", this.wordDiv);
-      this.latterSpan.style.fontSize = fontSize;
-      this.latterSpan.style.fontFamily = fontFamily;
+      this.latterSpan.style.font = font;
       this.controlsDiv = this.addUiElement("div", "spritz_controls", this.rootDiv);
       this.wpmSelectLabel = this.addUiElement("label", "spritz_wpmlabel", this.controlsDiv);
       this.wpmSelectLabel.innerHTML = "WPM:";
+      this.wpmSelectLabel.removeAttribute("style");
       this.wpmSelect = this.addUiElement("select", "spritz_wpm", this.controlsDiv);
+      this.wpmSelect.onclick = (function(_this) {
+        return function(event) {
+          event.preventDefault();
+          if (event.stopPropagation) {
+            return event.stopPropagation();
+          } else {
+            return event.cancelBubble = true;
+          }
+        };
+      })(this);
       for (wpm = _i = 200; _i <= 1000; wpm = _i += 50) {
         wpmOption = document.createElement("option");
         wpmOption.text = wpm;
@@ -93,8 +100,13 @@
       }
       this.wpmSelect.removeAttribute("style");
       this.startButton = this.addUiElement("button", "spritz_start", this.controlsDiv);
-      this.startButton.onclick = function() {
-        return spritz.start();
+      this.startButton.onclick = function(event) {
+        spritz.start();
+        if (event.stopPropagation) {
+          return event.stopPropagation();
+        } else {
+          return event.cancelBubble = true;
+        }
       };
       this.startButton.innerHTML = "Start";
       this.startButton.removeAttribute("style");
@@ -134,16 +146,16 @@
       var former, latter, pivot, pivotIndex;
       pivotIndex = 0;
       if (word.length > 1) {
-        pivotIndex = word.length / 2 - 1;
+        pivotIndex = word.length / 2;
       }
       pivot = word.charAt(pivotIndex);
       this.pivotSpan.innerHTML = pivot;
       latter = "";
-      if (word.length > 1) {
+      if (word.length > 2) {
         latter = word.slice(pivotIndex + 1, word.length);
       }
       former = "";
-      if (word.length > 2) {
+      if (word.length > 1) {
         former = word.slice(0, pivotIndex);
       }
       while (former.length > latter.length) {

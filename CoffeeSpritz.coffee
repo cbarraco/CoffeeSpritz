@@ -32,15 +32,15 @@ class @Spritz
     @rootDiv.style.borderWidth = "3px"
     @rootDiv.style.cursor = "move"
     @mouseDown = false
-    @rootDiv.addEventListener "mousedown", () =>
+    @rootDiv.onmousedown = () =>
       @mouseDown = true
-    @rootDiv.addEventListener "mouseup", () =>
+    @rootDiv.onmouseup = () =>
       @mouseDown = false
-    @rootDiv.addEventListener "mousemove", (mouseEvent) =>
+    @rootDiv.onmousemove = (event) =>
       if @mouseDown
-        @rootDiv.style.left = mouseEvent.clientX + "px"
-        @rootDiv.style.top = mouseEvent.clientY - 40 + "px"
-      mouseEvent.preventDefault()
+        @rootDiv.style.left = event.clientX + "px"
+        @rootDiv.style.top = event.clientY - 40 + "px"
+      event.preventDefault()
     @rootDiv.addEventListener "mouseleave", () =>
       @mouseDown = false
     font = "bold 32px Courier"
@@ -55,15 +55,26 @@ class @Spritz
     @controlsDiv = @addUiElement("div", "spritz_controls", @rootDiv)
     @wpmSelectLabel = @addUiElement("label", "spritz_wpmlabel", @controlsDiv)
     @wpmSelectLabel.innerHTML = "WPM:"
+    @wpmSelectLabel.removeAttribute("style")
     @wpmSelect = @addUiElement("select", "spritz_wpm", @controlsDiv)
+    @wpmSelect.onclick = (event) =>
+      event.preventDefault()
+      if event.stopPropagation
+        event.stopPropagation()
+      else
+        event.cancelBubble = true
     for wpm in [200..1000] by 50
       wpmOption = document.createElement("option")
       wpmOption.text = wpm
       @wpmSelect.add(wpmOption)
     @wpmSelect.removeAttribute("style")
     @startButton = @addUiElement("button", "spritz_start", @controlsDiv)
-    @startButton.onclick = () ->
+    @startButton.onclick = (event) ->
       spritz.start()
+      if event.stopPropagation
+        event.stopPropagation()
+      else
+        event.cancelBubble = true
     @startButton.innerHTML = "Start"
     @startButton.removeAttribute("style")
     @closeButton = @addUiElement("button", "spritz_close", @controlsDiv)
@@ -89,14 +100,14 @@ class @Spritz
   setWord: (word) ->
     pivotIndex = 0
     if word.length > 1
-      pivotIndex = word.length / 2 - 1 # Take the floor to make an odd length word more right heavy
+      pivotIndex = word.length / 2 # Take the floor to make an odd length word more right heavy
     pivot = word.charAt(pivotIndex)
     @pivotSpan.innerHTML = pivot
     latter = ""
-    if word.length > 1
+    if word.length > 2
       latter = word.slice(pivotIndex + 1, word.length)
     former = ""
-    if word.length > 2
+    if word.length > 1
       former = word.slice(0, pivotIndex)
     while former.length > latter.length
       latter += "\u00A0"
